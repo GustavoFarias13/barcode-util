@@ -1,12 +1,12 @@
 package com.gustavofarias.barcodedecoder.controller;
 
+import com.gustavofarias.barcodedecoder.dto.BarcodeResponse;
 import com.gustavofarias.barcodedecoder.service.BarcodeService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/barcode")
@@ -19,7 +19,9 @@ public class BarcodeController {
     }
 
     @GetMapping("/{code}")
-    public Map<String, Object> decode(@PathVariable String code) {
-        return barcodeService.decodeBarcode(code);
+    public ResponseEntity<BarcodeResponse> decode(@PathVariable String code) {
+        var result = barcodeService.decodeBarcode(code);
+        return ResponseEntity.ok(result);
     }
+
 }
