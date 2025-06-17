@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface PrefixRepository extends JpaRepository<Prefix, Long> {
 
-    @Query("SELECT p.country FROM Prefix p WHERE p.code = :code")
-    Optional<String> findCountryByPrefixCode(@Param("code") int code);
+    @Query(value = "SELECT * FROM prefix WHERE code = :code LIMIT 1", nativeQuery = true)
+    Optional<Prefix> findFirstByCode(@Param("code") int code);
 
 }
