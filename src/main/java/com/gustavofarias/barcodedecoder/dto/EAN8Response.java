@@ -1,17 +1,21 @@
 package com.gustavofarias.barcodedecoder.dto;
 
-import lombok.*;
+import com.gustavofarias.barcodedecoder.model.BarcodeType;
+import lombok.Builder;
+import lombok.Getter;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
 @Builder
 public class EAN8Response implements BarcodeDecodedResponse {
 
-    private String barcode;
-    private boolean valid;
-    private String prefix;
-    private String country;
-    private String productCode;
-    private String checkDigit;
+    private final String barcode;
+    private final boolean valid;
+    private final String prefix;
+    private final String productCode;
+    private final String checkDigit;
+
+    @Override
+    public BarcodeType getBarcodeType() {
+        return BarcodeType.EAN_8;
+    }
 }
