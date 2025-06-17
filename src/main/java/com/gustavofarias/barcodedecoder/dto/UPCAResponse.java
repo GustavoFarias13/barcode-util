@@ -7,6 +7,7 @@ import lombok.*;
 @Builder
 public class UPCAResponse implements BarcodeDecodedResponse{
 
+    private final String encodingType = String.valueOf(BarcodeType.UPC_A);
     private final String barcode;
     private final boolean valid;
     private final String systemNumber;
@@ -15,8 +16,4 @@ public class UPCAResponse implements BarcodeDecodedResponse{
     private final String productCode;
     private final String checkDigit;
 
-    @Override
-    public BarcodeType getBarcodeType() {
-        return BarcodeType.UPC_A;
-    }
 }

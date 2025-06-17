@@ -9,6 +9,7 @@ import lombok.Getter;
 @Builder
 public class EAN13Response implements BarcodeDecodedResponse {
 
+    private final String encodingType = String.valueOf(BarcodeType.EAN_13);
     private final String barcode;
     private final boolean valid;
     private final String prefix;
@@ -17,8 +18,4 @@ public class EAN13Response implements BarcodeDecodedResponse {
     private final String productCode;
     private final String checkDigit;
 
-    @Override
-    public BarcodeType getBarcodeType() {
-        return BarcodeType.EAN_13;
-    }
 }

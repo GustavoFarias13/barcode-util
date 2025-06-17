@@ -13,6 +13,7 @@ public class BarcodeValidatorFactory {
             case EAN_13 -> new EAN13Validator();
             case UPC_A -> new UPCAValidator();
             case EAN_8 -> new EAN8Validator();
+            case DUN_14 -> new DUN14Validator();
             default -> throw new InvalidBarcodeException("Unsupported or unrecognized barcode format");
         };
     }
