@@ -1,23 +1,24 @@
-package com.gustavofarias.barcodedecoder.utils;
+package com.gustavofarias.barcodedecoder.validator;
 
 import com.gustavofarias.barcodedecoder.exception.BarcodeParsingException;
 import com.gustavofarias.barcodedecoder.exception.InvalidBarcodeException;
 
-public class EAN13Validator {
+public class EAN13Validator implements BarcodeValidator {
 
-    public static boolean validate(String code) {
+    @Override
+    public boolean validate(String code) {
         if (code == null || code.isBlank()) {
             throw new InvalidBarcodeException("Barcode cannot be null or empty");
         }
 
         if (!code.matches("\\d{13}")) {
-            throw new InvalidBarcodeException("The barcode must contain exactly 13 numeric digits");
+            throw new InvalidBarcodeException("EAN-13 barcode must contain exactly 13 numeric digits");
         }
 
         return calculateChecksum(code) == Character.getNumericValue(code.charAt(12));
     }
 
-    private static int calculateChecksum(String code) {
+    private int calculateChecksum(String code) {
         try {
             int sum = 0;
             for (int i = 0; i < 12; i++) {
