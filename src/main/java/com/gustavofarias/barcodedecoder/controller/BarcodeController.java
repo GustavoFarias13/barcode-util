@@ -2,6 +2,7 @@ package com.gustavofarias.barcodedecoder.controller;
 
 import com.gustavofarias.barcodedecoder.dto.BarcodeDecodedResponse;
 import com.gustavofarias.barcodedecoder.service.BarcodeService;
+import com.gustavofarias.barcodedecoder.util.BarcodeNormalizer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +21,7 @@ public class BarcodeController {
 
     @GetMapping("/{barcode}")
     public ResponseEntity<BarcodeDecodedResponse> decode(@PathVariable String barcode) {
-        var result = barcodeService.decodeBarcode(barcode);
+        var result = barcodeService.decodeBarcode(BarcodeNormalizer.normalize(barcode));
         return ResponseEntity.ok(result);
     }
 }
