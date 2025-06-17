@@ -18,10 +18,10 @@ public class BarcodeController {
         this.barcodeService = barcodeService;
     }
 
-    @GetMapping("/{code}")
-    public ResponseEntity<BarcodeResponse> decode(@PathVariable String code) {
-        var result = barcodeService.decodeBarcode(code);
+    @GetMapping("/{barcode}")
+    public ResponseEntity<BarcodeResponse> decode(@PathVariable String barcode) {
+        var result = barcodeService.decodeBarcode(barcode);
         return ResponseEntity.ok(result);
     }
-
 }
+
