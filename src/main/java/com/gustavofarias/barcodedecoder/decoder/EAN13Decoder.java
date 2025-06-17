@@ -17,14 +17,14 @@ public class EAN13Decoder implements BarcodeDecoder {
 
     @Override
     public BarcodeDecodedResponse decode(String barcode) {
-        var prefixStr = barcode.substring(0, 3);
+        var prefix = barcode.substring(0, 3);
         var manufacturer = barcode.substring(3, 7);
         var product = barcode.substring(7, 12);
         var checker = barcode.substring(12);
 
-        var prefixOpt = prefixRepository.findFirstByCode(Integer.parseInt(prefixStr));
+        var prefixOpt = prefixRepository.findFirstByCode(Integer.parseInt(prefix));
         if (prefixOpt.isEmpty()) {
-            throw new BarcodeNotFoundException("Prefix not found for code: " + prefixStr);
+            throw new BarcodeNotFoundException("Prefix not found for code: " + prefix);
         }
 
         var country = prefixOpt.get().getCountry();
@@ -32,11 +32,11 @@ public class EAN13Decoder implements BarcodeDecoder {
         return EAN13Response.builder()
                 .barcode(barcode)
                 .valid(true)
-                .prefix(prefixStr)
-                .country(country)
-                .manufacturerCode(manufacturer)
-                .productCode(product)
+                .prefixInfo(prefix + " - " + country)
+                .manufacturer(manufacturer)
+                .product(product)
                 .checkDigit(checker)
                 .build();
     }
+
 }

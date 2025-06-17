@@ -31,10 +31,10 @@ public class EAN8Decoder implements BarcodeDecoder {
         return EAN8Response.builder()
                 .barcode(barcode)
                 .valid(true)
-                .prefix(prefix)
-                .country(country)
-                .productCode(productCode)
+                .prefixInfo(prefix + " - " + country)
+                .product(productCode)
                 .checkDigit(checkDigit)
                 .build();
     }
+
 }

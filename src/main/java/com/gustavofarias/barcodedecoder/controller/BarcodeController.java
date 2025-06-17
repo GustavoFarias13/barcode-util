@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/barcode-decoder")
+@RequestMapping("/api/barcode")
 public class BarcodeController {
 
     private final BarcodeService barcodeService;
@@ -19,7 +19,7 @@ public class BarcodeController {
         this.barcodeService = barcodeService;
     }
 
-    @GetMapping("/{barcode}")
+    @GetMapping("/decode/{barcode}")
     public ResponseEntity<BarcodeDecodedResponse> decode(@PathVariable String barcode) {
         var result = barcodeService.decodeBarcode(BarcodeNormalizer.normalize(barcode));
         return ResponseEntity.ok(result);
