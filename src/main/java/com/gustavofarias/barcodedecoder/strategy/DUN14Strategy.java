@@ -16,9 +16,9 @@ public class DUN14Strategy implements BarcodeStrategy {
 
     @Override
     public boolean isValid(String barcode) {
-        if (getCodificationType().requiresNormalization()) {
-            barcode = BarcodeNormalizer.normalize(barcode);
-        }
+//        if (getCodificationType().requiresNormalization()) {
+//            barcode = BarcodeNormalizer.normalize(barcode);
+//        }
 
         return barcode != null && barcode.matches("\\d{14}");
     }
