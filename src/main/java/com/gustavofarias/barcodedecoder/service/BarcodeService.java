@@ -1,39 +1,27 @@
 package com.gustavofarias.barcodedecoder.service;
 
-import com.gustavofarias.barcodedecoder.decoder.BarcodeDecoderFactory;
 import com.gustavofarias.barcodedecoder.dto.BarcodeDecodedResponse;
-import com.gustavofarias.barcodedecoder.exception.BarcodeParsingException;
-import com.gustavofarias.barcodedecoder.exception.DatabaseAccessException;
 import com.gustavofarias.barcodedecoder.exception.InvalidBarcodeException;
-import com.gustavofarias.barcodedecoder.util.BarcodeValidationUtil;
-import org.springframework.dao.DataAccessException;
+import com.gustavofarias.barcodedecoder.strategy.BarcodeStrategy;
+import com.gustavofarias.barcodedecoder.strategy.BarcodeStrategyFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BarcodeService {
 
-    private final BarcodeDecoderFactory decoderFactory;
+    private final BarcodeStrategyFactory strategyFactory;
 
-    public BarcodeService(BarcodeDecoderFactory decoderFactory) {
-        this.decoderFactory = decoderFactory;
+    public BarcodeService(BarcodeStrategyFactory strategyFactory) {
+        this.strategyFactory = strategyFactory;
     }
 
     public BarcodeDecodedResponse decodeBarcode(String barcode) {
-        if (!BarcodeValidationUtil.validateWithAutoDetection(barcode)) {
-            throw new InvalidBarcodeException("Invalid barcode.");
+        BarcodeStrategy strategy = strategyFactory.getStrategy(barcode);
+        if (!strategy.isValid(barcode)) {
+            throw new InvalidBarcodeException("Invalid barcode for type: " + strategy.getCodificationType());
         }
 
-        var decoderOpt = decoderFactory.getDecoder(barcode);
-        var decoder = decoderOpt.orElseThrow(() ->
-                new InvalidBarcodeException("Unsupported barcode type or length"));
+        return strategy.decode(barcode);
 
-        try {
-            return decoder.decode(barcode);
-        } catch (DataAccessException e) {
-            throw new DatabaseAccessException("Error accessing database", e);
-        } catch (Exception e) {
-            throw new BarcodeParsingException("Error processing barcode", e);
-        }
     }
 }
-

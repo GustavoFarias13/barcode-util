@@ -7,14 +7,6 @@ public class BarcodeNormalizer {
             throw new IllegalArgumentException("Barcode cannot be null or empty");
         }
 
-        // Remove tudo que não for dígito
-        String cleaned = rawCode.replaceAll("\\D", "");
-
-        // Verifica tamanho válido para os três modelos
-        if (cleaned.length() == 8 || cleaned.length() == 12 || cleaned.length() == 13) {
-            return cleaned;
-        } else {
-            return rawCode;
-        }
+        return rawCode.replaceAll("\\D", ""); // Remove tudo que não for número
     }
 }
