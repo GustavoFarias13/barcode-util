@@ -7,24 +7,27 @@ public class BarcodeTypeDetector {
     private static final char FNC1 = 29;
 
     public static BarcodeType detectType(String barcode) {
-        if (barcode == null) return BarcodeType.UNKNOWN;
+        if (barcode == null || barcode.isEmpty()) return BarcodeType.UNKNOWN;
 
         if (isGs1128(barcode)) {
             return BarcodeType.GS1128;
         }
 
-        if (!barcode.matches("\\d+")) {
-            return BarcodeType.UNKNOWN;
+        if (barcode.matches("\\d+")) {
+            return switch (barcode.length()) {
+                case 13 -> BarcodeType.EAN13;
+                case 12 -> BarcodeType.UPCA;
+                case 8 -> detectEan8OrUpce(barcode);
+                case 14 -> BarcodeType.DUN14;
+                default -> BarcodeType.UNKNOWN;
+            };
         }
 
-        int length = barcode.length();
-        return switch (length) {
-            case 13 -> BarcodeType.EAN13;
-            case 12 -> BarcodeType.UPCA;
-            case 8 -> detectEan8OrUpce(barcode);
-            case 14 -> BarcodeType.DUN14;
-            default -> BarcodeType.UNKNOWN;
-        };
+        if (barcode.matches("[\\x20-\\x7E]+")) {
+            return BarcodeType.CODE128;
+        }
+
+        return BarcodeType.UNKNOWN;
     }
 
     public static boolean isGs1128(String barcode) {
