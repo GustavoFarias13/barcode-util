@@ -4,17 +4,17 @@ import jakarta.persistence.*;
 import lombok.Getter;
 
 @Entity
-@Table(name = "prefix")
+@Table(name = "system_numbers")
 @Getter
-public class Prefix {
+public class SystemNumbers {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private Integer code;
+    private Integer number;
 
     @Column(nullable = false)
-    private String country;
+    private String description;
 }
