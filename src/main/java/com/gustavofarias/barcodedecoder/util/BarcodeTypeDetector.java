@@ -4,13 +4,20 @@ import com.gustavofarias.barcodedecoder.model.BarcodeType;
 
 public class BarcodeTypeDetector {
 
+    private static final char FNC1 = 29;
+
     public static BarcodeType detectType(String barcode) {
-        if (barcode == null || !barcode.matches("\\d+")) {
+        if (barcode == null) return BarcodeType.UNKNOWN;
+
+        if (isGs1128(barcode)) {
+            return BarcodeType.GS1128;
+        }
+
+        if (!barcode.matches("\\d+")) {
             return BarcodeType.UNKNOWN;
         }
 
-        var length = barcode.length();
-
+        int length = barcode.length();
         return switch (length) {
             case 13 -> BarcodeType.EAN13;
             case 12 -> BarcodeType.UPCA;
@@ -18,6 +25,16 @@ public class BarcodeTypeDetector {
             case 14 -> BarcodeType.DUN14;
             default -> BarcodeType.UNKNOWN;
         };
+    }
+
+    public static boolean isGs1128(String barcode) {
+        if (barcode == null || barcode.isEmpty()) return false;
+
+        if (barcode.charAt(0) == FNC1) {
+            return true;
+        }
+
+        return barcode.matches("^\\(\\d{2,3}\\).+");
     }
 
     /**

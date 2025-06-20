@@ -6,6 +6,8 @@ public enum BarcodeType {
     UPCA("UPC-A", true),
     DUN14("DUN-14", false),
     UPCE("UPC-E", true),
+    GS1128("GS1-128", false),
+    CODE128("CODE 128", false),
     UNKNOWN("Unknown", false);
 
     private final boolean requiresNormalization;
@@ -17,4 +19,4 @@ public enum BarcodeType {
     public boolean requiresNormalization() {
         return requiresNormalization;
     }
-}
+    }

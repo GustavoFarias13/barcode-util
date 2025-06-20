@@ -3,7 +3,7 @@ package com.gustavofarias.barcodedecoder.strategy;
 import com.gustavofarias.barcodedecoder.dto.BarcodeDecodedResponse;
 import com.gustavofarias.barcodedecoder.dto.DUN14Response;
 import com.gustavofarias.barcodedecoder.model.BarcodeType;
-import com.gustavofarias.barcodedecoder.util.BarcodeNormalizer;
+//import com.gustavofarias.barcodedecoder.util.BarcodeNormalizer;
 import org.springframework.stereotype.Component;
 
 @Component
