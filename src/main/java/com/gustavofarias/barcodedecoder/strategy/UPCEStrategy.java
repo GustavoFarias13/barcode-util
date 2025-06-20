@@ -30,6 +30,7 @@ public class UPCEStrategy implements BarcodeStrategy {
         return barcode != null && barcode.matches("\\d{12}");
     }
 
+    // TODO 04210005, 01234565 and 06510005
     @Override
     public BarcodeDecodedResponse decode(String barcode) {
         var systemNumber = Integer.parseInt(barcode.substring(0, 1));

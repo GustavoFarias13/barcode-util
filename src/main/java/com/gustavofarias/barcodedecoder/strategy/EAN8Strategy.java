@@ -31,6 +31,7 @@ public class EAN8Strategy implements BarcodeStrategy {
         return barcode != null && barcode.matches("\\d{8}");
     }
 
+    // TODO 73513537, 96385074 and 01234565
     @Override
     public BarcodeDecodedResponse decode(String barcode) {
         var prefix = Integer.parseInt(barcode.substring(0, 3));
