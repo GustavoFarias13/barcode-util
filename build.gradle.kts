@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.gustavofarias"
-version = "0.0.5"
+version = "v0.0.4"
 
 java {
     toolchain {
