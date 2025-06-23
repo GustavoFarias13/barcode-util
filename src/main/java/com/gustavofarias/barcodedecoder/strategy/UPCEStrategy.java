@@ -27,7 +27,7 @@ public class UPCEStrategy implements BarcodeStrategy {
 //            barcode = BarcodeNormalizer.normalize(barcode);
 //        }
 
-        return barcode != null && barcode.matches("\\d{12}");
+        return barcode != null && barcode.matches("\\d{8}");
     }
 
     @Override
@@ -35,7 +35,6 @@ public class UPCEStrategy implements BarcodeStrategy {
         var systemNumber = Integer.parseInt(barcode.substring(0, 1));
         var compressedBody = barcode.substring(1, 7);
         var checkDigit = barcode.substring(7);
-
 
         var systemNumberOpt = systemNumbersRepository.findFirstByNumber(systemNumber)
                 .orElseThrow(() -> new BarcodeNotFoundException("System number not found for code: " + systemNumber));
