@@ -5,11 +5,11 @@ plugins {
 }
 
 group = "com.gustavofarias"
-version = "0.0.3"
+version = "v0.0.4"
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
