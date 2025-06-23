@@ -31,7 +31,6 @@ public class EAN13Strategy implements BarcodeStrategy {
         return barcode != null && barcode.matches("\\d{13}");
     }
 
-    // TODO 4006381333931 and 5010255079763
     @Override
     public BarcodeDecodedResponse decode(String barcode) {
         var prefix = Integer.parseInt(barcode.substring(0, 3));

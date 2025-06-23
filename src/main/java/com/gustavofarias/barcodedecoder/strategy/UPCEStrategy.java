@@ -27,16 +27,14 @@ public class UPCEStrategy implements BarcodeStrategy {
 //            barcode = BarcodeNormalizer.normalize(barcode);
 //        }
 
-        return barcode != null && barcode.matches("\\d{12}");
+        return barcode != null && barcode.matches("\\d{8}");
     }
 
-    // TODO 04210005, 01234565 and 06510005
     @Override
     public BarcodeDecodedResponse decode(String barcode) {
         var systemNumber = Integer.parseInt(barcode.substring(0, 1));
         var compressedBody = barcode.substring(1, 7);
         var checkDigit = barcode.substring(7);
-
 
         var systemNumberOpt = systemNumbersRepository.findFirstByNumber(systemNumber)
                 .orElseThrow(() -> new BarcodeNotFoundException("System number not found for code: " + systemNumber));
