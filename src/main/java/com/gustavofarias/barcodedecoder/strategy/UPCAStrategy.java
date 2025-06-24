@@ -5,32 +5,59 @@ import com.gustavofarias.barcodedecoder.dto.UPCAResponse;
 import com.gustavofarias.barcodedecoder.exception.BarcodeNotFoundException;
 import com.gustavofarias.barcodedecoder.model.BarcodeType;
 import com.gustavofarias.barcodedecoder.repository.SystemNumbersRepository;
-import com.gustavofarias.barcodedecoder.util.BarcodeNormalizer;
 import org.springframework.stereotype.Component;
 
+/**
+ * Strategy implementation for decoding UPC-A barcodes.
+ * <p>
+ * Validates and parses the barcode according to UPC-A format,
+ * including looking up system number information from the database.
+ */
 @Component
 public class UPCAStrategy implements BarcodeStrategy {
 
     private final SystemNumbersRepository systemNumbersRepository;
 
+    /**
+     * Constructor injecting the SystemNumbersRepository dependency
+     * for system number lookups.
+     */
     public UPCAStrategy(SystemNumbersRepository systemNumbersRepository) {
         this.systemNumbersRepository = systemNumbersRepository;
     }
 
+    /**
+     * Returns the barcode type handled by this strategy.
+     */
     @Override
     public BarcodeType getCodificationType() {
         return BarcodeType.UPCA;
     }
 
+    /**
+     * Validates that the barcode is exactly 12 digits.
+     *
+     * @param barcode the barcode string to validate
+     * @return true if barcode matches 12 digits, false otherwise
+     */
     @Override
     public boolean isValid(String barcode) {
-//        if (getCodificationType().requiresNormalization()) {
-//            barcode = BarcodeNormalizer.normalize(barcode);
-//        }
-
         return barcode != null && barcode.matches("\\d{12}");
     }
 
+    /**
+     * Decodes the UPC-A barcode into its components:
+     * - system number (first digit)
+     * - manufacturer code (next 5 digits)
+     * - product code (next 5 digits)
+     * - check digit (last digit)
+     * <p>
+     * Also looks up system number description from the repository.
+     *
+     * @param barcode the 12-digit barcode string
+     * @return a UPCAResponse DTO with detailed decoded data
+     * @throws BarcodeNotFoundException if system number is not found in DB
+     */
     @Override
     public BarcodeDecodedResponse decode(String barcode) {
         var systemNumber = Integer.parseInt(barcode.substring(0, 1));
