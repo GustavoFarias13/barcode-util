@@ -1,1 +1,1 @@
-rootProject.name = "barcode-decoder"
+rootProject.name = "barcode-util"
