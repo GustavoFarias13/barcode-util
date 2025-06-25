@@ -85,8 +85,8 @@ O projeto segue o padrão **MVC + Strategy**, com foco em extensibilidade e resp
 1. Clone o projeto:
 
 ```bash
-git clone https://github.com/seuusuario/barcode-decoder.git
-cd barcode-decoder
+git clone https://github.com/GustavoFarias13/barcode-util.git
+cd barcode-util
 ```
 
 2. Rode o projeto com Spring Boot (IntelliJ ou terminal):
