@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.gustavofarias"
-version = "v0.1.1"
+version = "v1.0.0"
 
 java {
     toolchain {
@@ -29,6 +29,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.flywaydb:flyway-core")
     implementation("org.xerial:sqlite-jdbc:3.42.0.0")
+    implementation("com.google.zxing:core:3.5.2")
+    implementation("com.google.zxing:javase:3.5.2")
+    implementation("net.sf.barcode4j:barcode4j:2.1")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")

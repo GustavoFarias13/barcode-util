@@ -46,7 +46,7 @@ public class GS1128Strategy implements BarcodeStrategy {
      * @return true if the barcode starts with '(', false otherwise
      */
     @Override
-    public boolean isValid(String barcode) {
+    public Boolean isValid(String barcode) {
         return barcode != null && barcode.startsWith("(");
     }
 

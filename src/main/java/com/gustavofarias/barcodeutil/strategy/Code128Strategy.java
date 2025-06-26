@@ -31,7 +31,7 @@ public class Code128Strategy implements BarcodeStrategy {
      * @return true if valid, false otherwise
      */
     @Override
-    public boolean isValid(String barcode) {
+    public Boolean isValid(String barcode) {
         return barcode != null && barcode.matches("[\\x20-\\x7E]+");
     }
 

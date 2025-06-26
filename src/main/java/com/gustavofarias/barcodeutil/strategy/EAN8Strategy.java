@@ -41,7 +41,7 @@ public class EAN8Strategy implements BarcodeStrategy {
      * @return true if barcode matches 8 digits, false otherwise
      */
     @Override
-    public boolean isValid(String barcode) {
+    public Boolean isValid(String barcode) {
         return barcode != null && barcode.matches("\\d{8}");
     }
 

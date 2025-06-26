@@ -30,7 +30,7 @@ public class DUN14Strategy implements BarcodeStrategy {
      * @return true if the barcode matches the DUN-14 numeric format
      */
     @Override
-    public boolean isValid(String barcode) {
+    public Boolean isValid(String barcode) {
         return barcode != null && barcode.matches("\\d{14}");
     }
 
