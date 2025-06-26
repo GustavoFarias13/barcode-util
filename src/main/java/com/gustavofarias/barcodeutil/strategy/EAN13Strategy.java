@@ -41,7 +41,7 @@ public class EAN13Strategy implements BarcodeStrategy {
      * @return true if barcode matches 13 digits, false otherwise
      */
     @Override
-    public boolean isValid(String barcode) {
+    public Boolean isValid(String barcode) {
         return barcode != null && barcode.matches("\\d{13}");
     }
 

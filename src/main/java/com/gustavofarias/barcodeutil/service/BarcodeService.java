@@ -1,9 +1,12 @@
 package com.gustavofarias.barcodeutil.service;
 
 import com.gustavofarias.barcodeutil.dto.BarcodeDecodedResponse;
+import com.gustavofarias.barcodeutil.dto.BarcodeGeneratedResponse;
+import com.gustavofarias.barcodeutil.exception.BarcodeNotGeneratedException;
 import com.gustavofarias.barcodeutil.exception.InvalidBarcodeException;
 import com.gustavofarias.barcodeutil.strategy.BarcodeStrategy;
 import com.gustavofarias.barcodeutil.strategy.BarcodeStrategyFactory;
+import com.gustavofarias.barcodeutil.util.BarcodeImageGenerator;
 import org.springframework.stereotype.Service;
 
 /**
@@ -47,4 +50,34 @@ public class BarcodeService {
 
         return strategy.decode(barcode);
     }
+
+    /**
+     * Generates a barcode image for the given barcode string.
+     * <p>
+     * The method selects the appropriate barcode generation strategy based on the barcode format,
+     * validates the barcode, and then generates a Base64 encoded image.
+     *
+     * @param barcode the barcode string to be encoded and generated as an image
+     * @return a {@link BarcodeGeneratedResponse} containing the barcode type, original barcode,
+     *         and the Base64 encoded barcode image
+     * @throws InvalidBarcodeException       if the barcode is invalid for the detected type
+     * @throws BarcodeNotGeneratedException  if barcode image generation fails
+     */
+    public BarcodeGeneratedResponse generateBarcode(String barcode) {
+        BarcodeStrategy strategy = strategyFactory.getStrategy(barcode);
+
+        if (!strategy.isValid(barcode)) {
+            throw new InvalidBarcodeException("Invalid barcode for type: " + strategy.getCodificationType());
+        }
+
+        try {
+            var type = strategy.getCodificationType();
+            var base64 = BarcodeImageGenerator.generateBase64Image(barcode, type);
+
+            return new BarcodeGeneratedResponse(type, barcode, base64);
+        } catch (Exception e) {
+            throw new BarcodeNotGeneratedException("Failed to generate barcode image: " + e);
+        }
+    }
+
 }

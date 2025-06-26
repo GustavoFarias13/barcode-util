@@ -24,7 +24,7 @@ public interface BarcodeStrategy {
      * @param code the barcode string to validate
      * @return true if valid, false otherwise
      */
-    boolean isValid(String code);
+    Boolean isValid(String code);
 
     /**
      * Decodes the given barcode string into a structured response.
