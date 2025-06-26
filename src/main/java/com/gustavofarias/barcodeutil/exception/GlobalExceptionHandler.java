@@ -3,7 +3,8 @@ package com.gustavofarias.barcodeutil.exception;
 import com.gustavofarias.barcodeutil.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
 
@@ -56,6 +57,16 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleGeneric(Exception ex) {
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected internal error", ex);
     }
+
+    /**
+     * Handles BarcodeNotGeneratedException, returning HTTP 500 Internal Server Error
+     * with a message indicating an error during barcode image generation.
+     */
+    @ExceptionHandler(BarcodeNotGeneratedException.class)
+    public ResponseEntity<ErrorResponse> handleImageGeneration(BarcodeNotGeneratedException ex) {
+        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Error generating barcode image", ex);
+    }
+
 
     /**
      * Helper method to build a standardized ErrorResponse wrapped in a ResponseEntity.
