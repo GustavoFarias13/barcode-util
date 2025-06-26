@@ -1,142 +1,91 @@
 
-# 📦 Barcode Decoder API
+# 📦 Barcode Util
 
-**Barcode Decoder** é uma API Java Spring Boot que decodifica diversos formatos de códigos de barras, retornando informações estruturadas e legíveis. Ela suporta códigos como EAN-13, EAN-8, UPC-A, UPC-E, DUN-14, GS1-128 e Code 128, com parsing específico para cada padrão.
+Projeto Spring Boot para geração e decodificação de códigos de barras, incluindo suporte a padrões populares como EAN-13, CODE 128 e GS1-128.
 
----
+## 🛠️ Tecnologias Utilizadas
 
-## 🚀 Funcionalidades
+- Java 17
+- Spring Boot
+- Gradle
+- SQLite (via Hibernate)
+- ZXing (geração de imagem)
+- Barcode4J (geração de GS1-128)
+- JUnit (testes)
 
-- 🎯 **Detecção automática do tipo de código de barras**
-- 🧠 **Parsing específico por estratégia para cada tipo (Strategy Pattern)**
-- 📋 **Decodificação de códigos GS1-128 com interpretação de Application Identifiers (AIs)**
-- 🏷️ **Consulta a prefixos e fabricantes (GTIN)**
-- 🧪 **Validação inteligente com normalização opcional**
-- 📚 **Armazenamento de dados auxiliares em banco SQLite embarcado**
-- ⚠️ **Tratamento robusto de exceções e erros de parsing**
-- 🧬 Extensível com novas estratégias de codificação
+## 🚀 Como Executar
 
----
+1. **Clone o repositório**
+   ```bash
+   git clone https://github.com/seuusuario/barcode-util.git
+   cd barcode-util
+   ```
 
-## 🧱 Arquitetura
+2. **Execute o projeto com Gradle**
+   ```bash
+   ./gradlew bootRun
+   ```
 
-O projeto segue o padrão **MVC + Strategy**, com foco em extensibilidade e responsabilidade única:
+> A aplicação estará disponível em `http://localhost:8080`
 
-- `controller/` – expõe os endpoints REST
-- `service/` – orquestra a lógica de negócios
-- `strategy/` – implementa estratégias para cada padrão de código de barras
-- `dto/` – objetos de resposta específicos para cada tipo
-- `repository/` – acesso ao banco SQLite via Spring Data JPA
-- `exception/` – tratamento centralizado de erros
-- `util/` – ferramentas auxiliares (ex: normalização e detecção)
+## 🔄 Endpoints Disponíveis
 
----
+### ▶️ Gerar código de barras
 
-## 🔍 Tipos de Códigos Suportados
+- **GET** `/api/barcode/generate?barcode=1234567890128`
 
-| Tipo       | Suporte | Estratégia Implementada | Observações |
-|------------|---------|--------------------------|-------------|
-| `EAN-13`   | ✅      | `EAN13Strategy`          | Validação e extração de país/fabricante |
-| `EAN-8`    | ✅      | `EAN8Strategy`           | Decodificação direta |
-| `UPC-A`    | ✅      | `UPCAStrategy`           | Compatível com EAN-13 |
-| `UPC-E`    | ✅      | `UPCEStrategy`           | Expansão para UPC-A |
-| `DUN-14`   | ✅      | `DUN14Strategy`          | Baseado em GTIN-13 |
-| `GS1-128`  | ✅      | `GS1128Strategy`         | Interpretação de múltiplos AIs |
-| `CODE 128` | ✅      | `Code128Strategy`        | Aceita qualquer payload textual |
+  Gera a imagem (base64) de um código de barras válido.
 
----
+  **Exemplo de resposta:**
+  ```json
+  {
+    "type": "EAN-13",
+    "base64": "iVBORw0KGgoAAAANSUhEUgAA..."
+  }
+  ```
 
-## 🧪 Exemplos de Resposta
+### 📥 Decodificar código de barras
 
-```json
-// Exemplo para GS1-128
-{
-  "type": "GS1-128",
-  "fields": [
-    {
-      "applicationIdentifier": "01",
-      "value": "12345678901231",
-      "description": "GTIN"
-    },
-    {
-      "applicationIdentifier": "10",
-      "value": "ABC123",
-      "description": "Lote"
+- **GET** `/api/barcode/decode?barcode=1234567890128`
+
+  Retorna a descrição do código de barras decodificado.
+
+  **Exemplo de resposta:**
+  ```json
+  {
+    "type": "EAN-13",
+    "data": {
+      "country": "Brasil",
+      "manufacturer": "7890123",
+      "product": "456789"
     }
-  ]
-}
-```
+  }
+  ```
 
----
+## 📘 Tipos de Código de Barras Suportados
 
-## 🧰 Tecnologias Utilizadas
+| Tipo       | Descrição                    | Suporta Geração | Suporta Decodificação |
+|------------|------------------------------|------------------|------------------------|
+| EAN-13     | Código europeu de 13 dígitos | ✅               | ✅                     |
+| EAN-8      | Código europeu reduzido      | ✅               | ✅                     |
+| UPC-A      | Código padrão americano      | ✅               | ✅                     |
+| UPC-E      | Versão compacta do UPC-A     | ✅               | ✅                     |
+| DUN-14     | Código logístico de unidades | ✅               | ✅                     |
+| CODE 128   | Código alfanumérico flexível | ✅               | ✅                     |
+| GS1-128    | Códigos com múltiplos AIs    | ✅               | ✅                     |
 
-- ☕ Java 17+
-- ⚙️ Spring Boot 3
-- 🛢 SQLite com Hibernate Dialect customizado
-- 🧪 JUnit para testes
-- 🧬 Strategy Pattern para modularização
-- 📖 Banco populado com AIs GS1 e Prefixos GTIN
+> A detecção do tipo é automática com base no valor informado.
 
----
-
-## ⚙️ Como Executar
-
-1. Clone o projeto:
+## 🧪 Rodando Testes
 
 ```bash
-git clone https://github.com/GustavoFarias13/barcode-util.git
-cd barcode-util
-```
-
-2. Rode o projeto com Spring Boot (IntelliJ ou terminal):
-
-```bash
-./gradlew bootRun
-```
-
-3. Acesse a API:
-
-```
-GET http://localhost:8080/api/barcode/decode?barcode=1234567890123
+./gradlew test
 ```
 
 ---
 
-## 📂 Banco de Dados
+## 🧠 Sobre
 
-O projeto utiliza um SQLite embarcado com tabelas:
-
-- `application_identifiers` – códigos GS1
-- `prefix` – prefixos de país/fabricante (GTIN)
-- `system_numbers` – informações adicionais para análise de GTINs
+Este projeto foi criado com o objetivo de estudar e oferecer uma ferramenta simples e extensível para análise de códigos de barras. Ideal para uso educacional, integração com sistemas logísticos ou aplicações comerciais.
 
 ---
-
-## 💡 Expansão
-
-Para adicionar um novo tipo:
-
-1. Crie uma nova `Strategy` implementando `BarcodeStrategy`
-2. Crie um `Response DTO`
-3. Registre na `BarcodeStrategyFactory`
-
----
-
-## 🛑 Tratamento de Erros
-
-Erros são tratados via `GlobalExceptionHandler`, com respostas estruturadas:
-
-```json
-{
-  "error": "Invalid barcode for type: EAN-13"
-}
-```
-
----
-
-## 🧑‍💻 Autor
-
-**Gustavo Farias**  
-[LinkedIn](https://www.linkedin.com/in/gustavo-farias-a7b795190/)  
-Desenvolvedor Java | Backend | APIs REST
