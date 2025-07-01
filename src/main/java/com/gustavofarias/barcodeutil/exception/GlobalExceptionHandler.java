@@ -63,8 +63,8 @@ public class GlobalExceptionHandler {
      * with a message indicating an error during barcode image generation.
      */
     @ExceptionHandler(BarcodeNotGeneratedException.class)
-    public ResponseEntity<ErrorResponse> handleImageGeneration(BarcodeNotGeneratedException ex) {
-        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Error generating barcode image", ex);
+    public ResponseEntity<ErrorResponse> handleNotGenerated(BarcodeNotGeneratedException ex) {
+        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Barcode not generated", ex);
     }
 
 
